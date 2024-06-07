@@ -13,7 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.2'
     - uses: ruby/setup-ruby@v1
+    
       with:
               ruby-version: '3.3'
 
@@ -21,16 +25,22 @@ jobs:
       with:
     # Optional. Default: 'latest'
             version: 'latest'
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+    - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: Setup Xcode
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '15.2'
     - name: Setup Maui
       run: dotnet workload install maui
+    - name: Fastlane lane
+      env:
+        FASTLANE_ISSUER_ID: ${{ secrets.FASTLANE_ISSUER_ID }}
+        FASTLANE_KEY_ID: ${{ secrets.FASTLANE_KEY_ID }}
+        FASTLANE_PRIVATE_KEY: ${{ secrets.FASTLANE_PRIVATE_KEY }}
+      run: fastlane match appstore
+    - name: Archive generated certificates and provisioning profile
+      uses: actions/upload-artifact@v2
+      with:
+          name: certificates_and_profiles
+          path: "~/Library/MobileDevice/Provisioning Profiles, ~/.fastlane/certs"
     
     
     
