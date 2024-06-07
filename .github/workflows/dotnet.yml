@@ -34,7 +34,7 @@ jobs:
               "key_id": "2ZLY3J6J82",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
               
-              is_key_content_base64: true
+              "is_key_content_base64": true
             }'   
     - name: Setup Maui
       run: dotnet workload install maui
