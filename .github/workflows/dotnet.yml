@@ -23,8 +23,7 @@ jobs:
         xcode-version: '15.2'
     - name: Setup Maui
       run: dotnet workload install maui
-    - name: Create Certifcate And Provision Profile
-    - run: brew install fastlane
+    
     
       
       
