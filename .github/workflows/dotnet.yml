@@ -32,15 +32,22 @@ jobs:
       run: dotnet workload install maui
     - name: Fastlane lane
       env:
-        FASTLANE_ISSUER_ID: ${{ secrets.FASTLANE_ISSUER_ID }}
-        FASTLANE_KEY_ID: ${{ secrets.FASTLANE_KEY_ID }}
-        FASTLANE_PRIVATE_KEY: ${{ secrets.FASTLANE_PRIVATE_KEY }}
-      run: fastlane match appstore
-    - name: Archive generated certificates and provisioning profile
-      uses: actions/upload-artifact@v2
+        FASTLANE_ISSUER_ID: 'adf9507d-dc61-424e-8c5a-32458ea0b617'
+        FASTLANE_KEY_ID: '2ZLY3J6J82'
+        FASTLANE_PRIVATE_KEY: 'MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgsWI+PNBGEt+dscL/sQqQRMbbmDC9gBQSHBRdGw046HigCgYIKoZIzj0DAQehRANCAATcoDiiH3lmvFzUjnL4w8jzwZ0CiV8S81O5nyFZ6WNZpMclcN+VyLodgkl5I10F5um7k8/VuxLRhNF/Czs53QRL'
+      run: fastlane match appstore --app_identifier com.companyname.samplemaui --readonly --profile_name MyCustomProfileName
+    - name: Get Code Signing Key
+      id: get_code_signing_key
+      run: echo "::set-env name=CODE_SIGNING_KEY::$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')"
+    - name: Restore App
+      run: dotnet restore
+    - name: Publish App
+      run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
       with:
-          name: certificates_and_profiles
-          path: "~/Library/MobileDevice/Provisioning Profiles, ~/.fastlane/certs"
+        path: |
+          ./**/*.ipa
     
     
     
