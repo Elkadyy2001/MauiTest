@@ -42,7 +42,7 @@ jobs:
         
     - name: Get Code Signing Key
       id: get_code_signing_key
-      run: echo "::set-env name=CODE_SIGNING_KEY::$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')"
+      run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Restore App
       run: dotnet restore
     - name: Publish App
