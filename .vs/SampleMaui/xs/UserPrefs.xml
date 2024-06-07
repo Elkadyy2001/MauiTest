@@ -1,8 +1,6 @@
-﻿<Properties StartupConfiguration="{5F9BAB1D-3112-4891-B4B3-5BD43C031A45}|Default">
+﻿<Properties GitUserInfo="UsingGIT" StartupConfiguration="{5F9BAB1D-3112-4891-B4B3-5BD43C031A45}|Default">
   <Xamarin.Addins.Core.Project ActiveDebugTarget="MyAppleMacCatalystID" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints />
   <MonoDevelop.Ide.Workbench ActiveDocument="SampleMaui/MainPage.xaml">
     <Files>
       <File FileName="SampleMaui/MainPage.xaml.cs" />
