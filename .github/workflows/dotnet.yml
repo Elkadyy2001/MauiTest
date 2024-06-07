@@ -29,7 +29,7 @@ jobs:
       env:
         MATCH_PASSWORD: '12345678'
       run: |
-       fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName  --git_url https://github.com/Elkadyy2001/MauiTest.git  --api_key '{
+       fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileNamee  --git_url https://github.com/Elkadyy2001/MauiTest.git  --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
               ,"key_id": "2ZLY3J6J82",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
@@ -46,7 +46,7 @@ jobs:
     - name: Restore App
       run: dotnet restore
     - name: Publish App
-      run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
+      run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileNamee"
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
