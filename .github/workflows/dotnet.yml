@@ -25,8 +25,6 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: Setup Maui
-      run: dotnet workload install maui
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
@@ -35,7 +33,10 @@ jobs:
               "key": "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgsWI+PNBGEt+dscL/sQqQRMbbmDC9gBQSHBRdGw046HigCgYIKoZIzj0DAQehRANCAATcoDiiH3lmvFzUjnL4w8jzwZ0CiV8S81O5nyFZ6WNZpMclcN+VyLodgkl5I10F5um7k8/VuxLRhNF/Czs53QRL",
               "key_id": "2ZLY3J6J82",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617"
-            }'
+            }'   
+    - name: Setup Maui
+      run: dotnet workload install maui
+   
         
     - name: Get Code Signing Key
       id: get_code_signing_key
