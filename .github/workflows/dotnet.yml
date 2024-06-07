@@ -13,6 +13,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - uses: ruby/setup-ruby@v1
+      with:
+              ruby-version: '3.3'
+
+    - uses: tashi-iu/setup-fastlane@v1
+      with:
+    # Optional. Default: 'latest'
+            version: 'latest'
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -23,6 +31,7 @@ jobs:
         xcode-version: '15.2'
     - name: Setup Maui
       run: dotnet workload install maui
+    
     
     
       
