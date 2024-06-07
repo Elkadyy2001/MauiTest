@@ -42,10 +42,7 @@
 	  <CreatePackage>false</CreatePackage>
 	</PropertyGroup>
 <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
-  <MtouchUseLlvm>False</MtouchUseLlvm>
-<AotAssemblies>True</AotAssemblies>
- <MtouchLink>SdkOnly</MtouchLink>
-      <MtouchUseLlvm>true</MtouchUseLlvm>
+  <PublishTrimmed>false</PublishTrimmed>
   </PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
