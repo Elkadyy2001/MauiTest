@@ -24,7 +24,7 @@ jobs:
             version: 'latest'
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: 8.0.x
     - name: Setup Keychain
       run: |
           security create-keychain -p mypassword build.keychain
@@ -53,7 +53,7 @@ jobs:
     - name: Restore App
       run: dotnet restore
     - name: Publish App
-      run: dotnet publish -f net9.0-ios -c Release -p:ArchiveOnBuild=true -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
+      run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
