@@ -26,15 +26,17 @@ jobs:
       with:
         dotnet-version: 9.0.x
     - name: Setup Keychain
-      run: |
-      
-          security unlock-keychain -p login.keychain
+        run: |
+          security create-keychain -p mypassword build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p mypassword build.keychain
+          security list-keychains -d user -s build.keychain
       
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
       run: |
-       fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git  --api_key '{
+       fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --keychain_name build.keychain  --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
               ,"key_id": "2ZLY3J6J82",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
