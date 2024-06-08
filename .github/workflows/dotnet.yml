@@ -28,7 +28,7 @@ jobs:
     - name: Setup Keychain
       run: |
       
-          security unlock-keychain login.keychain
+          security unlock-keychain -p login.keychain
       
     - name: Fastlane lane
       env:
