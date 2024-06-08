@@ -38,20 +38,17 @@ jobs:
               "in_house": false
               
             }'   
-    - name: Setup Maui
-      run: dotnet workload install maui
-   
-        
     - name: Get Code Signing Key
       id: get_code_signing_key
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Remove Prompt
       run: |
-       IDENTITY=$(security find-certificate -c "${{ env.CODE_SIGNING_KEY }}" -p | openssl x509 -noout -subject | awk -F'CN=' '{print $2}' | tr -d '"')
-
-       security set-key-partition-list -S apple-tool:,apple: -s -k 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 ~/Library/Keychains/login.keychain-db
-       security set-key-partition-list -S apple-tool:,apple: -s -k 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 -t private ~/Library/Keychains/login.keychain-db
-       security set-key-partition-list -S apple-tool:,apple: -s -k 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 -t private -D "$IDENTITY" ~/Library/Keychains/login.keychain-db
+       IDENTITY=$(security find-certificate -c "${{ env.CODE_SIGNING_KEY }}" -p | openssl x509 -noout -subject | awk -F'CN=' '{print $2}' | tr -d '"')    
+    - name: Setup Maui
+      run: dotnet workload install maui
+   
+        
+  
 
 
     - name: Restore App
