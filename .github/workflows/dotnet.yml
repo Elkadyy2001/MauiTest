@@ -25,13 +25,19 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    
+    - name: Create NewKeyChain
+      run: |
+            security create-keychain -p 2001 Build.keychain
+            security list-keychains -d user -s login.keychain Build.keychain
+            security default-keychain -s Build.keychain
+
+
       
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
       run: |
-       fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main    --api_key '{
+       fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main --keychain_name Build.keychain    --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
               ,"key_id": "2ZLY3J6J82",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
@@ -44,7 +50,9 @@ jobs:
     - name: Remove Prompt
       run: |
        IDENTITY=$(security find-certificate -c "${{ env.CODE_SIGNING_KEY }}" -p | openssl x509 -noout -subject | awk -F'CN=' '{print $2}' | tr -d '"') 
-       security set-key-partition-list -S apple-tool:,apple: -s -k 12345678 ~/Library/Keychains/login.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 2001 ~/Library/Keychains/Build.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 2001 -t private ~/Library/Keychains/Build.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 2001 -t private -D "$IDENTITY" ~/Library/Keychains/Build.keychain-db
     - name: Setup Maui
       run: dotnet workload install maui
    
