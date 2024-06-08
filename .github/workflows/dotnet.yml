@@ -25,20 +25,19 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: Create NewKeyChain
+    - name: Run Fastlane Setup CI
       run: |
-            security create-keychain -p 2001 Build.keychain
-            security list-keychains -d user -s login.keychain Build.keychain
-            security default-keychain -s Build.keychain
+        fastlane setup_ci
+
             
 
       
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
-        MATCH_GIT_BASIC_AUTHORIZATION: 'Z2hwX2plbE1JMzlsNVgxNWtZN3NJdUR3WHBYUVV4YXBGRjM5c3o2cA=='
+
       run: |
-       fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main --keychain_name Build.keychain    --api_key '{
+       fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main    --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
               ,"key_id": "2ZLY3J6J82",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
@@ -48,10 +47,7 @@ jobs:
     - name: Get Code Signing Key
       id: get_code_signing_key
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
-    - name: Remove Prompt
-      run: |
-            security unlock-keychain -p 2001 Build.keychain
-            security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k 2001 Build.keychain
+    
     - name: Setup Maui
       run: dotnet workload install maui
    
