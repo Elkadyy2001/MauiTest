@@ -57,7 +57,7 @@ jobs:
     - name: Get IPA Path
       id: find-ipa
       run: |
-         IPA_PATH=$(find / -name "*.ipa" -type f)
+       IPA_PATH=$(find $(pwd) -name "*.ipa")
          echo "::set-output name=ipa-path::$IPA_PATH"  >> $GITHUB_ENV
          
     - name: Publish To Store
