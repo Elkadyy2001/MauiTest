@@ -49,7 +49,7 @@ jobs:
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Remove Prompt
       run: |
-            security unlock-keychain -p 2001 build.keychain
+            security unlock-keychain -p 2001 Build.keychain
             security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k 2001 Build.keychain
     - name: Setup Maui
       run: dotnet workload install maui
