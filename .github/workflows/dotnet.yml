@@ -33,6 +33,8 @@ jobs:
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
+        MATCH_KEYCHAIN_NAME: 'build.keychain'
+        MATCH_KEYCHAIN_PASSWORD: '2001'
       run: |
          fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git  --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
@@ -41,6 +43,7 @@ jobs:
               "in_house": false
               
             }' 
+            bundle exec fastlane run_match_signing
     - name: Get Code Signing Key
       id: get_code_signing_key
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
