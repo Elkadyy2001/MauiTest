@@ -34,7 +34,7 @@ jobs:
       env:
         MATCH_PASSWORD: '12345678'
         MATCH_KEYCHAIN_PASSWORD: '2001'
-        MATCH_KEYCHAIN_NAME: 'build'
+        MATCH_KEYCHAIN_NAME: 'build.keychain-db'
 
       run: |
        security create-keychain -p "2001" "build.keychain-db"
