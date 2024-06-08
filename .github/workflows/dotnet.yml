@@ -33,7 +33,7 @@ jobs:
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
-        MATCH_KEYCHAIN_PASSWORD: '12345678'
+        MATCH_KEYCHAIN_PASSWORD: '123456789'
         
 
       run: |
@@ -50,9 +50,9 @@ jobs:
        - name: SetupCli
          run: |
          IDENTITY=$(security find-certificate -c "${{ env.CODE_SIGNING_KEY }}" -p | openssl x509 -noout -subject | awk -F'CN=' '{print $2}' | tr -d '"')
-       security set-key-partition-list -S apple-tool:,apple: -s -k 12345678 ~/Library/Keychains/login.keychain-db
-       security set-key-partition-list -S apple-tool:,apple: -s -k 12345678 -t private ~/Library/Keychains/login.keychain-db
-       security set-key-partition-list -S apple-tool:,apple: -s -k 12345678 -t private -D "$IDENTITY" ~/Library/Keychains/login.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 123456789 ~/Library/Keychains/login.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 123456789 -t private ~/Library/Keychains/login.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 123456789 -t private -D "$IDENTITY" ~/Library/Keychains/login.keychain-db
    
 
    
