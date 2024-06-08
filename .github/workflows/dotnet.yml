@@ -36,7 +36,7 @@ jobs:
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
-        MATCH_GIT_BASIC_AUTHORIZATION: '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'
+        MATCH_GIT_BASIC_AUTHORIZATION: 'Z2hwX2plbE1JMzlsNVgxNWtZN3NJdUR3WHBYUVV4YXBGRjM5c3o2cA=='
       run: |
        fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main --keychain_name Build.keychain    --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
