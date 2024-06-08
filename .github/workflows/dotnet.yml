@@ -49,15 +49,16 @@ jobs:
               "in_house": false
               
             }' 
+            bundle exec fastlane run_match_signing
              - name: Get Code Signing Key
               id: get_code_signing_key
                run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
        - name: SetupCli
          run: |
          IDENTITY=$(security find-certificate -c "${{ env.CODE_SIGNING_KEY }}" -p | openssl x509 -noout -subject | awk -F'CN=' '{print $2}' | tr -d '"')
-       security set-key-partition-list -S apple-tool:,apple: -s -k 123456789 ~/Library/Keychains/build.keychain-db
-       security set-key-partition-list -S apple-tool:,apple: -s -k 123456789 -t private ~/Library/Keychains/build.keychain-db
-       security set-key-partition-list -S apple-tool:,apple: -s -k 123456789 -t private -D "$IDENTITY" ~/Library/Keychains/build.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 2001 ~/Library/Keychains/build.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 2001 -t private ~/Library/Keychains/build.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 2001 -t private -D "$IDENTITY" ~/Library/Keychains/build.keychain-db
    
 
    
