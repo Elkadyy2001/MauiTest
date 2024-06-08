@@ -28,12 +28,13 @@ jobs:
    
 
             
-    - name: SetupCli
-      run: fastlane run setup_ci
+    
       
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
+        MATCH_KEYCHAIN_PASSWORD: '12345678'
+        
 
       run: |
        fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main    --api_key '{
@@ -42,10 +43,17 @@ jobs:
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
               "in_house": false
               
-            }'   
-    - name: Get Code Signing Key
-      id: get_code_signing_key
-      run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
+            }' 
+             - name: Get Code Signing Key
+              id: get_code_signing_key
+               run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
+       - name: SetupCli
+         run: |
+         IDENTITY=$(security find-certificate -c "${{ env.CODE_SIGNING_KEY }}" -p | openssl x509 -noout -subject | awk -F'CN=' '{print $2}' | tr -d '"')
+       security set-key-partition-list -S apple-tool:,apple: -s -k 12345678 ~/Library/Keychains/login.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 12345678 -t private ~/Library/Keychains/login.keychain-db
+       security set-key-partition-list -S apple-tool:,apple: -s -k 12345678 -t private -D "$IDENTITY" ~/Library/Keychains/login.keychain-db
+   
 
    
     
