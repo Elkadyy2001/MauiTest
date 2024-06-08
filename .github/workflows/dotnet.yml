@@ -61,9 +61,13 @@ jobs:
          echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
          
     - name: Publish To Store
+      env: 
+          API_PRIVATE_KEYS_DIR: './'
+      
+      
       run: |
-          xcrun altool --validate-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82 --apiKeyPath "./AuthKey_2ZLY3J6J82.p8" --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
-          xcrun altool --upload-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82 --apiKeyPath "./AuthKey_2ZLY3J6J82.p8" --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
+          xcrun altool --validate-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
+          xcrun altool --upload-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
