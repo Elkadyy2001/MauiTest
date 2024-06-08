@@ -48,10 +48,10 @@ jobs:
     - name: Remove Prompt
       run: |
         IDENTITY=$(security find-certificate -c "${{ env.CODE_SIGNING_KEY }}" -p | openssl x509 -noout -subject | awk -F'CN=' '{print $2}' | tr -d '"')
+        security set-key-partition-list -S apple-tool:,apple: -s ~/Library/Keychains/login.keychain-db
+        security set-key-partition-list -S apple-tool:,apple: -s -t private ~/Library/Keychains/login.keychain-db
+        security set-key-partition-list -S apple-tool:,apple: -s -t private -D "$IDENTITY" ~/Library/Keychains/login.keychain-db
 
-        security set-key-partition-list -S apple-tool:,apple: -s -k "" ~/Library/Keychains/login.keychain-db
-        security set-key-partition-list -S apple-tool:,apple: -s -k "" -t private ~/Library/Keychains/login.keychain-db
-        security set-key-partition-list -S apple-tool:,apple: -s -k "" -t private -D "$IDENTITY" ~/Library/Keychains/login.keychain-db
 
     - name: Restore App
       run: dotnet restore
