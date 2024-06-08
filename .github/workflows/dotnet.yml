@@ -37,7 +37,7 @@ jobs:
         MATCH_KEYCHAIN_NAME: 'build'
 
       run: |
-       fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main --keychain_name build.keychain-db   --api_key '{
+       fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main  --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
               ,"key_id": "2ZLY3J6J82",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
