@@ -27,10 +27,9 @@ jobs:
         dotnet-version: 9.0.x
     - name: Setup Keychain
       run: |
-          security create-keychain -p mypassword build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p mypassword build.keychain
-          security list-keychains -d user -s build.keychain
+      
+          security unlock-keychain login.keychain
+      
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
