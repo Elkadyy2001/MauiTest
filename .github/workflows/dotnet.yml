@@ -25,16 +25,13 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-   
-
-            
-    
       
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
         MATCH_KEYCHAIN_NAME: 'build.keychain'
         MATCH_KEYCHAIN_PASSWORD: '2001'
+        token: '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'
       run: |
          security create-keychain -p 2001 build.keychain
          security default-keychain -s build.keychain
@@ -48,32 +45,17 @@ jobs:
               "in_house": false
               
             }' 
-
     - name: Get Code Signing Key
       id: get_code_signing_key
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
-       
-   
-
-   
-    
     - name: Setup Maui
       run: dotnet workload install maui
-   
-        
-  
-
-
     - name: Restore App
       run: dotnet restore
     - name: Publish App
       run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        path: |
-          ./**/*.ipa
-    
+    - name: Publish To Store
+    - run: xcrun altool --upload-app -f bin/Release/net8.0-ios/ios-arm64/publish/SampleMaui.ipa -t ios --apiKey 2ZLY3J6J82 -i adf9507d-dc61-424e-8c5a-32458ea0b617 --apiKeyPath ./AuthKey_2ZLY3J6J82.p8
     
     
       
