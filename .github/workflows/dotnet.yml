@@ -54,9 +54,16 @@ jobs:
       run: dotnet restore
     - name: Publish App
       run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
+    - name: Get IPA Path
+      id: find-ipa
+      run: |
+         IPA_PATH=$(find / -name "*.ipa" -type f)
+         echo "::set-output name=ipa-path::$IPA_PATH"  >> $GITHUB_ENV
+         
     - name: Publish To Store
-      run: xcrun altool --upload-app -f "bin/Release/net8.0-ios/ios-arm64/publish//SampleMaui.ipa" -t ios --apiKey 2ZLY3J6J82 --apiKeyPath "./AuthKey_2ZLY3J6J82.p8"
-
+      run: |
+          xcrun altool --validate-app -f "${{ steps.find-ipa.outputs.ipa-path }}" -t ios --apiKey 2ZLY3J6J82 --apiKeyPath "./AuthKey_2ZLY3J6J82.p8" --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
+          xcrun altool --upload-app -f "${{ steps.find-ipa.outputs.ipa-path }}" -t ios --apiKey 2ZLY3J6J82 --apiKeyPath "./AuthKey_2ZLY3J6J82.p8" --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
