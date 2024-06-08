@@ -33,7 +33,7 @@ jobs:
     - name: Fastlane lane
       env:
         MATCH_PASSWORD: '12345678'
-        MATCH_KEYCHAIN_PASSWORD: '123456789'
+        MATCH_KEYCHAIN_PASSWORD: '2001'
         MATCH_KEYCHAIN_NAME: 'build'
 
       run: |
