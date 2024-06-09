@@ -39,7 +39,7 @@ jobs:
          security list-keychains -s build.keychain
          security unlock-keychain -p 2001 build.keychain
          security set-keychain-settings -t 3600 -u build.keychain
-         fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main  --api_key '{
+         fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
               ,"key_id": "2ZLY3J6J82",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
@@ -48,7 +48,7 @@ jobs:
             }' 
 
 
-         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main  --api_key '{
+         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
               ,"key_id": "2ZLY3J6J82",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
@@ -78,7 +78,12 @@ jobs:
       run: |
           xcrun altool --validate-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
           xcrun altool --upload-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
+    - name: SendNotification To User
+    - run: |
+           curl --include --request POST --header "Content-Type: application/json" --header "Authorization: MTM0OGRiNzItNjU4NC00NTRhLTgxYTYtNTcwMmU1NGMzMGMz" --data '{"app_id": "897e14e3-7897-4206-aa80-ee2fd35c7c0d", "included_segments": ["UsserTopic"], "contents": {"en": "Your App Has Been Succesfuly Deployed To Store"}, "headings": {"en": "Congratulations"}}' https://onesignal.com/api/v1/notifications
 
+
+    
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
