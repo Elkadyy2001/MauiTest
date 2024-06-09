@@ -39,13 +39,20 @@ jobs:
          security list-keychains -s build.keychain
          security unlock-keychain -p 2001 build.keychain
          security set-keychain-settings -t 3600 -u build.keychain
-           fastlane match nuke distribution --app_identifier com.companyname.samplemaui  --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main  --api_key '{
-              "filepath": "./AuthKey_2ZLY3J6J82.p8"
-              ,"key_id": "2ZLY3J6J82",
-              "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
-              "in_house": false
-              
-            }' 
+         brew install expect
+
+          expect -c "
+             set timeout -1;
+             spawn fastlane match nuke distribution --app_identifier com.companyname.samplemaui --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main --api_key \"{
+              \\\"filepath\\\": \\\"./AuthKey_2ZLY3J6J82.p8\\\",
+              \\\"key_id\\\": \\\"2ZLY3J6J82\\\",
+              \\\"issuer_id\\\": \\\"adf9507d-dc61-424e-8c5a-32458ea0b617\\\",
+              \\\"in_house\\\": false
+              }\";
+         expect \"Are you sure you want to completely delete and revoke all Distribution certificates and provisioning profiles listed above? (y/n)\";
+         send \"y\r\";
+         interact"
+
          fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main  --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
               ,"key_id": "2ZLY3J6J82",
