@@ -42,7 +42,7 @@ jobs:
          brew install expect
          expect -c "
          set timeout -1;
-         spawn fastlane match nuke distribution --app_identifier com.companyname.samplemaui --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main --api_key \"{
+         spawn fastlane match nuke distribution  --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main --api_key \"{
               \\\"filepath\\\": \\\"./AuthKey_2ZLY3J6J82.p8\\\",
               \\\"key_id\\\": \\\"2ZLY3J6J82\\\",
               \\\"issuer_id\\\": \\\"adf9507d-dc61-424e-8c5a-32458ea0b617\\\",
