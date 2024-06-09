@@ -39,22 +39,13 @@ jobs:
          security list-keychains -s build.keychain
          security unlock-keychain -p 2001 build.keychain
          security set-keychain-settings -t 3600 -u build.keychain
-         brew install expect
-          expect -c "
-         set timeout -1;
-         spawn fastlane match nuke --type distribution  --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main --api_key \"{
-              \\\"filepath\\\": \\\"./AuthKey_2ZLY3J6J82.p8\\\",
-              \\\"key_id\\\": \\\"2ZLY3J6J82\\\",
-              \\\"issuer_id\\\": \\\"adf9507d-dc61-424e-8c5a-32458ea0b617\\\",
-              \\\"in_house\\\": false
-              }\";
-         expect {
-                 \"Are you sure you want to completely delete and revoke all the\" { send \"y\r\" }
-                 \"certificates and delete provisioning profiles listed above? (y/n)\" { send \"y\r\" }
-                  \"Warning: By nuking distribution, both App Store and Ad Hoc profiles will be deleted\" { send \"y\r\" }
-                   \"Warning: The :app_identifier value will be ignored - this will delete all profiles for all your apps!\" { send \"y\r\" }
-                };
-          "
+         fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main  --api_key '{
+              "filepath": "./AuthKey_2ZLY3J6J82.p8"
+              ,"key_id": "2ZLY3J6J82",
+              "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
+              "in_house": false
+              
+            }' 
 
 
          fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch main  --api_key '{
