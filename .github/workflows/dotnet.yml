@@ -49,10 +49,8 @@ jobs:
               \\\"in_house\\\": false
               }\";
          expect {
-                 \"Are you sure you want to completely delete and revoke all the\" { send \"y\r\" exp_continue }
+                 \"Are you sure you want to completely delete and revoke all the\" { send \"y\r\"  }
                  \"certificates and delete provisioning profiles listed above? (y/n)\" { send \"y\r\" }
-                  \"Warning: By nuking distribution, both App Store and Ad Hoc profiles will be deleted\" { send \"y\r\" exp_continue }
-                   \"Warning: The :app_identifier value will be ignored - this will delete all profiles for all your apps!\" { send \"y\r\" exp_continue }
                 };
           eof"
 
