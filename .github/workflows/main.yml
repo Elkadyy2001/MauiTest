@@ -1,4 +1,4 @@
-name: Publish IOS Maui
+name: Publish IOS With ScreenShots Maui
 
 on:
    workflow_dispatch: # This triggers the workflow manually
