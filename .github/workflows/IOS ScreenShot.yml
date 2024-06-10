@@ -64,10 +64,11 @@ jobs:
       run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:MtouchLink=Full -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
     - name: Get IPA Path
       run: echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
-    - name: Get App Path
-      run: echo "app-path=$(find $(pwd)/SampleMaui/bin/Debug -name "*.app")"  >> $GITHUB_ENV
     - name: Build Debug App
       run: dotnet build  -f net8.0-ios
+    - name: Get App Path
+      run: echo "app-path=$(find $(pwd)/SampleMaui/bin/Debug -name "*.app")"  >> $GITHUB_ENV
+   
     - name: Deploy App To simulator
       run: |
              uids=$(xctrace list devices | grep -B1 -E "iPhone 15 Pro Max|iPhone 15 Pro" | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}')
