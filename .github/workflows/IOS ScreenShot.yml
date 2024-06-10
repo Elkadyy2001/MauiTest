@@ -53,9 +53,24 @@ jobs:
               "in_house": false
               
             }' 
-    - name: Get Code Signing Key
-      id: get_code_signing_key
-      run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
+                     fastlane match nuke development  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
+              "filepath": "./AuthKey_2ZLY3J6J82.p8"
+              ,"key_id": "2ZLY3J6J82",
+              "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
+              "in_house": false
+              
+            }' 
+         fastlane match development --app_identifier com.companyname.samplemaui --profile_name DebugProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
+              "filepath": "./AuthKey_2ZLY3J6J82.p8"
+              ,"key_id": "2ZLY3J6J82",
+              "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
+              "in_house": false
+              
+            }'
+    - name: Get Release Code Signing Key
+      run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep 'Apple Distribution' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
+    - name: Get Dev Code Signing Key
+      run: echo "coddev=$(security find-identity -p codesigning -v | grep 'Apple Developmend' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Setup Maui
       run: dotnet workload install maui
     - name: Restore App
@@ -69,13 +84,13 @@ jobs:
     - name: Build Debug App
     
       run: |
-           dotnet build  -f net8.0-ios -p:_DeviceName=:v2:udid=$(xctrace list devices | grep -B1 -E "iPhone 15 Pro Max|iPhone 15 Pro" | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}' | head -n 1)
+           dotnet build  -f net8.0-ios -p:CodesignKey="${{ env.coddev }}" -p:CodesignProvision="DebugProfileName"
     - name: Get App Path
       run: echo "app-path=$(find $(pwd)/SampleMaui/bin/Debug -name "*.app")"  >> $GITHUB_ENV
    
     - name: Deploy App To simulator
       run: |
-             uids=$(xctrace list devices | grep -B1 -E "iPhone 15 Pro Max|iPhone 15 Pro" | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}')
+             uids=$(xctrace list devices | grep -B1 -E "iPhone 15 Pro Max|iPhone 15 Pro|iPhone SE (3rd generation)|iPad Pro (12.9-inch) (6th generation)|iPad (10th generation)" | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}')
              for uid in $uids; do
              echo "Booting simulator $uid"
              # xcrun simctl boot $uid
@@ -83,7 +98,7 @@ jobs:
              xcrun simctl install $uid "${{ env.app-path }}"
              done
              fastlane snapshot --project "./FastlaneScreenShot/FastlaneScreenShot.xcodeproj"
-             xcrun simctl shutdown all
+             # xcrun simctl shutdown all
        
     - name: Publish To Store
       run: |
