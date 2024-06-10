@@ -84,5 +84,3 @@ jobs:
              done
              fastlane snapshot --project "./FastlaneScreenShot/FastlaneScreenShot.xcodeproj"
              xcrun simctl shutdown all
-    - name: Publish To Store
-      run:  dddddddd  
