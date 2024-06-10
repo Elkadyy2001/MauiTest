@@ -48,7 +48,7 @@ jobs:
             }' 
 
 
-         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
+         fastlane match appstore --platform macos --additional_cert_types mac_installer_distribution --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
               "filepath": "./AuthKey_2ZLY3J6J82.p8"
               ,"key_id": "2ZLY3J6J82",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
@@ -56,8 +56,9 @@ jobs:
               
             }' 
     - name: Get Code Signing Key
-      id: get_code_signing_key
-      run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
+      run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep 'Apple Distribution' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
+    - name: Get Package Signing Key
+      run: echo "Package_SIGNING_KEY=$(security find-identity -p macappstore -v | grep "3rd Party Mac Developer Installer" | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Setup Maui
       run: dotnet workload install maui
     - name: Restore App
