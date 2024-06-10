@@ -56,7 +56,6 @@ jobs:
               
             }' 
     - name: Get Code Signing Key
-      id: get_code_signing_key
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Setup Maui
       run: dotnet workload install maui
