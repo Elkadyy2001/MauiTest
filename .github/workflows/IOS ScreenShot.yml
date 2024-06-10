@@ -61,7 +61,7 @@ jobs:
     - name: Restore App
       run: dotnet restore
     - name: Publish App
-      run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:MtouchLink=ALL -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
+      run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:MtouchLink=Full -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
     - name: Get IPA Path
       run: echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
     - name: Build Debug App
