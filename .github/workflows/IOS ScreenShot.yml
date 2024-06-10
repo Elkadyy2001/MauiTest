@@ -70,7 +70,7 @@ jobs:
     - name: Get Release Code Signing Key
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep 'Apple Distribution' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Get Dev Code Signing Key
-      run: echo "coddev=$(security find-identity -p codesigning -v | grep 'Apple Developmend' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
+      run: echo "coddev=$(security find-identity -p codesigning -v | grep 'Apple Development' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Setup Maui
       run: dotnet workload install maui
     - name: Restore App
