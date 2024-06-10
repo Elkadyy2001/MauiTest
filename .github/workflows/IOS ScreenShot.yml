@@ -65,7 +65,7 @@ jobs:
     - name: Get IPA Path
       run: echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
     - name: Get App Path
-      run: echo "app-path=$(find $(pwd)/SampleMaui/bin/Release -name "*.app")"  >> $GITHUB_ENV
+      run: echo "app-path=$(find $(pwd)/SampleMaui/bin/Debug -name "*.app")"  >> $GITHUB_ENV
     - name: Build Debug App
       run: dotnet build  -f net8.0-ios
     - name: Deploy App To simulator
