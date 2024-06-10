@@ -97,9 +97,4 @@ jobs:
                 ,"key_id": "2ZLY3J6J82",
                 "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
                 "in_house": false}' 
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        path: |
-          ${{ env.ipa-path }}
 
