@@ -85,16 +85,14 @@ jobs:
              fastlane snapshot --project "./FastlaneScreenShot/FastlaneScreenShot.xcodeproj"
              xcrun simctl shutdown all
     - name: Publish To Store
-      env:
-        MATCH_PASSWORD: '12345678'
-        MATCH_KEYCHAIN_NAME: 'build.keychain'
-        MATCH_KEYCHAIN_PASSWORD: '2001'
-        MATCH_GIT_BASIC_AUTHORIZATION: 'RWxrYWR5eTIwMDE6Z2hwXzRxRWpjakJoU2hxMTBxMXlTOG9obEhndmNxMHE4WDJQWHlTQg=='
-        token: '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'
       run: | 
              fastlane deliver --overwrite_screenshots true --ipa "${{ env.ipa-path }}" --api_key '{
                 "filepath": "./AuthKey_2ZLY3J6J82.p8"
                 ,"key_id": "2ZLY3J6J82",
                 "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
                 "in_house": false}' 
-
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        path: |
+          ${{ env.ipa-path }}
