@@ -67,9 +67,5 @@ jobs:
       id: find-ipa
       run: |
          echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
-    - name: Build Debug App
-    - run:  dotnet build  -f net8.0-ios 
-    - name: Get App
-      run: |
-         echo "app-path=$(find $(pwd)/bin/Debug -name "*.app")"  >> $GITHUB_ENV
+
 
