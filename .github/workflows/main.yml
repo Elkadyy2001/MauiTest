@@ -69,7 +69,7 @@ jobs:
       run: |
  
          echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
-         
+    - name: Make ScreenShots    
     - name: Publish To Store
       env: 
           API_PRIVATE_KEYS_DIR: './'
