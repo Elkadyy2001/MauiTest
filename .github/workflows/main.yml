@@ -63,8 +63,7 @@ jobs:
     - name: Publish App
       run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
     - name: Get IPA Path
-      run: |
-         echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
+      run: echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
     - name: Build Debug App
     - run:  dotnet build  -f net8.0-ios 
     
@@ -79,6 +78,11 @@ jobs:
              done
              fastlane snapshot --project "./FastlaneScreenShot/FastlaneScreenShot.xcodeproj"
              xcrun simctl shutdown all
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        path: |
+          ${{ env.ipa-path }}          
     - name: Publish To Store
       run: |
        fastlane deliver --overwrite_screenshots true --ipa "${{ env.ipa-path }}" --api_key '{
@@ -87,10 +91,6 @@ jobs:
                 "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
                 "in_house": false}'
         
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        path: |
-          ${{ env.ipa-path }}
+   
 
 
