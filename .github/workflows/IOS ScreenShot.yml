@@ -38,16 +38,11 @@ jobs:
          security list-keychains -s build.keychain
          security unlock-keychain -p 2001 build.keychain
          security set-keychain-settings -t 3600 -u build.keychain
-         fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key "{\"key\": \"${{secrets.APIKEY}}\", \"key_id\": \"${{ secrets.KEYID }}\", \"issuer_id\": \"${{ secrets.ISSUERID }}\", \"in_house\": false"
-         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
-              "key": "${{ secrets.APIKEY }}"
-              ,"key_id": "${{ secrets.KEYID }}",
-              "issuer_id": "${{ secrets.ISSUERID }}",
-              "in_house": false
-              
-            }' 
-                     fastlane match nuke development  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key"{\"key\": \"${{secrets.APIKEY}}\", \"key_id\": \"${{ secrets.KEYID }}\", \"issuer_id\": \"${{ secrets.ISSUERID }}\", \"in_house\": false""{\"key\": \"${{secrets.APIKEY}}\", \"key_id\": \"${{ secrets.KEYID }}\", \"issuer_id\": \"${{ secrets.ISSUERID }}\", \"in_house\": false"
-         fastlane match development --app_identifier com.companyname.samplemaui --profile_name DebugProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key "{\"key\": \"${{secrets.APIKEY}}\", \"key_id\": \"${{ secrets.KEYID }}\", \"issuer_id\": \"${{ secrets.ISSUERID }}\", \"in_house\": false"
+         api_key_json=$(jq -n --arg key "${{secrets.APIKEY}}" --arg key_id "${{ secrets.KEYID }}" --arg issuer_id "${{ secrets.ISSUERID }}" '{filepath: $filepath, key_id: $key_id, issuer_id: $issuer_id, in_house: false}')
+         fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key "$api_key_json"
+         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key --api_key "$api_key_json"
+                     fastlane match nuke development  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key --api_key "$api_key_json"
+         fastlane match development --app_identifier com.companyname.samplemaui --profile_name DebugProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key --api_key "$api_key_json"
     - name: Get Release Code Signing Key
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep 'Apple Distribution' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Get Dev Code Signing Key
