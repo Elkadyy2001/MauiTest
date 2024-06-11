@@ -73,7 +73,7 @@ jobs:
              
              done
              xcrun simctl shutdown all
-             fastlane snapshot --project "./FastlaneScreenShot/FastlaneScreenShot.xcodeproj"
+             fastlane snapshot --project "./FastlaneScreenShot/FastlaneScreenShot.xcodeproj" --output_directory $(pwd)
        
     - name: Publish To Store
       run: |
