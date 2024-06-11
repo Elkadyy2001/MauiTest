@@ -39,22 +39,9 @@ jobs:
          security list-keychains -s build.keychain
          security unlock-keychain -p 2001 build.keychain
          security set-keychain-settings -t 3600 -u build.keychain
-         fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
-              "filepath": "./AuthKey_2ZLY3J6J82.p8"
-              ,"key_id": "2ZLY3J6J82",
-              "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
-              "in_house": false
-              
-            }' 
-
-
-         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
-              "filepath": "./AuthKey_2ZLY3J6J82.p8"
-              ,"key_id": "2ZLY3J6J82",
-              "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
-              "in_house": false
-              
-            }' 
+          api_key_json=$(jq -n --arg key "${{secrets.APIKEY}}" --arg key_id "${{ secrets.KEYID }}" --arg issuer_id "${{ secrets.ISSUERID }}" '{key: $key, key_id: $key_id, issuer_id: $issuer_id, in_house: false}')
+         fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key "$api_key_json"
+         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key "$api_key_json"
     - name: Get Code Signing Key
       id: get_code_signing_key
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
@@ -74,8 +61,8 @@ jobs:
       env: 
           API_PRIVATE_KEYS_DIR: './'
       run: |
-          xcrun altool --validate-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
-          xcrun altool --upload-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
+       api_key_json=$(jq -n --arg key "${{secrets.APIKEY}}" --arg key_id "${{ secrets.KEYID }}" --arg issuer_id "${{ secrets.ISSUERID }}" '{key: $key, key_id: $key_id, issuer_id: $issuer_id, in_house: false}')
+       fastlane deliver  --skip_screenshots true --ipa "${{ env.ipa-path }}" --api_key "$api_key_json"
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
