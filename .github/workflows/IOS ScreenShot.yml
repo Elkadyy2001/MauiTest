@@ -58,8 +58,6 @@ jobs:
     - name: Build Debug App
     
       run: |
-       dotnet clean
-       dotnet restore
            dotnet build  -f net8.0-ios
     - name: Get App Path
       run: echo "app-path=$(find $(pwd)/SampleMaui/bin/Debug -name "*.app")"  >> $GITHUB_ENV
