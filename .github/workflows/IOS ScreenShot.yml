@@ -39,30 +39,30 @@ jobs:
          security unlock-keychain -p 2001 build.keychain
          security set-keychain-settings -t 3600 -u build.keychain
          fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
-              "key": ${{ secrets.APIKEY }}
-              ,"key_id": ${{ secrets.KEYID }},
-              "issuer_id": ${{ secrets.ISSUERID }},
+              "key": "${{ secrets.APIKEY }}"
+              ,"key_id": "${{ secrets.KEYID }}",
+              "issuer_id": "${{ secrets.ISSUERID }}",
               "in_house": false
               
             }' 
          fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
-              "key": ${{ secrets.APIKEY }}
-              ,"key_id": ${{ secrets.KEYID }},
-              "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
+              "key": "${{ secrets.APIKEY }}"
+              ,"key_id": "${{ secrets.KEYID }}",
+              "issuer_id": "${{ secrets.ISSUERID }}",
               "in_house": false
               
             }' 
                      fastlane match nuke development  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
               "key": ${{ secrets.APIKEY }}
               ,"key_id": ${{ secrets.KEYID }},
-              "issuer_id": ${{ secrets.ISSUERID }},
+              "issuer_id": "${{ secrets.ISSUERID }}",
               "in_house": false
               
             }' 
          fastlane match development --app_identifier com.companyname.samplemaui --profile_name DebugProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
-              "key": ${{ secrets.APIKEY }}
-             ,"key_id": ${{ secrets.KEYID }},
-              "issuer_id": ${{ secrets.ISSUERID }},
+              "key": "${{ secrets.APIKEY }}"
+             ,"key_id": "${{ secrets.KEYID }}",
+              "issuer_id": "${{ secrets.ISSUERID }}",
               "in_house": false
               
             }'
