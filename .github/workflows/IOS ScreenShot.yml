@@ -40,9 +40,9 @@ jobs:
          security set-keychain-settings -t 3600 -u build.keychain
          api_key_json=$(jq -n --arg key "${{secrets.APIKEY}}" --arg key_id "${{ secrets.KEYID }}" --arg issuer_id "${{ secrets.ISSUERID }}" '{key: $key, key_id: $key_id, issuer_id: $issuer_id, in_house: false}')
          fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key "$api_key_json"
-         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key --api_key "$api_key_json"
-                     fastlane match nuke development  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key --api_key "$api_key_json"
-         fastlane match development --app_identifier com.companyname.samplemaui --profile_name DebugProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key --api_key "$api_key_json"
+         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key "$api_key_json"
+                     fastlane match nuke development  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key "$api_key_json"
+         fastlane match development --app_identifier com.companyname.samplemaui --profile_name DebugProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key  "$api_key_json"
     - name: Get Release Code Signing Key
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep 'Apple Distribution' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Get Dev Code Signing Key
@@ -80,7 +80,8 @@ jobs:
        
     - name: Publish To Store
       run: |
-       fastlane deliver --overwrite_screenshots true --ipa "${{ env.ipa-path }}" --api_key "{\"key\": \"${{secrets.APIKEY}}\", \"key_id\": \"${{ secrets.KEYID }}\", \"issuer_id\": \"${{ secrets.ISSUERID }}\", \"in_house\": false"
+       api_key_json=$(jq -n --arg key "${{secrets.APIKEY}}" --arg key_id "${{ secrets.KEYID }}" --arg issuer_id "${{ secrets.ISSUERID }}" '{key: $key, key_id: $key_id, issuer_id: $issuer_id, in_house: false}')
+       fastlane deliver --overwrite_screenshots true --ipa "${{ env.ipa-path }}" --api_key "$api_key_json"
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
