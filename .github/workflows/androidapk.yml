@@ -19,9 +19,9 @@ jobs:
       run: keytool -genkeypair -v -keystore $(pwd)/AppMare.keystore  -keyalg RSA -keysize 2048 -validity 365000 -storepass "${{ steps.generatedpassword.outputs.password }}" -alias AppMareKey -dname "cn=Appmare"
 
     - name: Setup Maui
-      run: dotnet workload install maui
+      run: dotnet workload install maui-android
     - name: Restore App
-      run: dotnet restore
+      run: dotnet restore -f net8.0-android 
     - name: Publish App
       run: dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="$(pwd)/AppMare.keystore" -p:AndroidSigningKeyAlias=AppMareKey -p:AndroidSigningKeyPass="${{ steps.generatedpassword.outputs.password }}" -p:AndroidSigningStorePass="${{ steps.generatedpassword.outputs.password }}"
     - name: Upload a Build Artifact
