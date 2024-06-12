@@ -9,9 +9,14 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
+    
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+    - name: Password Generator
+    - id: generatedpassword
+      uses: Ba4bes/Password-Generator@v0.1
+    - run: echo "${{ steps.generatedpassword.outputs.password }}"
     - name: Setup Maui
       run: dotnet workload install maui
     - name: Restore App
@@ -24,16 +29,6 @@ jobs:
  
          echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
          
-    - name: Publish To Store
-      env: 
-          API_PRIVATE_KEYS_DIR: './'
-      run: |
-       api_key_json=$(jq -n --arg key "${{secrets.APIKEY}}" --arg key_id "${{ secrets.KEYID }}" --arg issuer_id "${{ secrets.ISSUERID }}" '{key: $key, key_id: $key_id, issuer_id: $issuer_id, in_house: false}')
-       fastlane deliver  --skip_screenshots true --ipa "${{ env.ipa-path }}" --api_key "$api_key_json"
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        path: |
-          ${{ env.ipa-path }}
+  
 
         
