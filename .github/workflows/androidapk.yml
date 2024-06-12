@@ -24,12 +24,13 @@ jobs:
     - name: Restore App
       run: dotnet restore
     - name: Publish App
-      run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
-    - name: Get IPA Path
-      id: find-ipa
-      run: |
- 
-         echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
+      run: dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=AppMare.keystore -p:AndroidSigningKeyAlias=AppMareKey -p:AndroidSigningKeyPass="${{ steps.generatedpassword.outputs.password }}" -p:AndroidSigningStorePass="${{ steps.generatedpassword.outputs.password }}"
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        path: |
+          ./**/*.aab
+          ./**/*.apk
          
   
 
