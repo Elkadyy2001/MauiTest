@@ -64,14 +64,15 @@ jobs:
     - name: Restore App
       run: dotnet restore
     - name: Publish App
-      run: dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:RuntimeIdentifier=ios-arm64 -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName"
+     
+      run: |
+     
+          dotnet publish -f net8.0-maccatalyst -c Release  -p:CreatePackage=true -p:EnableCodeSigning=true -p:EnablePackageSigning=true -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName" -p:PackageSigningKey="${{ env.Package_SIGNING_KEY }}"
     - name: Get Pkg Path
 
       run: echo "pkg-path=$(find $(pwd) -name "*.pkg")"  >> $GITHUB_ENV
  
-         
-    - name: Get App   Path
-      run: echo "app-path=$(find $(pwd)/bin/Debug -name "*.app")"  >> $GITHUB_ENV  
+
           
     - name: Publish To Store
       env: 
@@ -83,7 +84,7 @@ jobs:
       uses: actions/upload-artifact@v3.1.0
       with:
         path: |
-          ${{ env.ipa-path }}
+          ${{ env.pkg-path }}
     
     
       
