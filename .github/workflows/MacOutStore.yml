@@ -1,0 +1,92 @@
+name: Publish MacOutStore Maui
+
+on:
+   workflow_dispatch: # This triggers the workflow manually
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.2'
+    - uses: ruby/setup-ruby@v1
+    
+      with:
+              ruby-version: '3.3'
+
+    - uses: tashi-iu/setup-fastlane@v1
+      with:
+    # Optional. Default: 'latest'
+            version: 'latest'
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+      
+    - name: Fastlane lane
+      env:
+        MATCH_PASSWORD: '12345678'
+        MATCH_KEYCHAIN_NAME: 'build.keychain'
+        MATCH_KEYCHAIN_PASSWORD: '2001'
+        MATCH_GIT_BASIC_AUTHORIZATION: 'RWxrYWR5eTIwMDE6Z2hwXzRxRWpjakJoU2hxMTBxMXlTOG9obEhndmNxMHE4WDJQWHlTQg=='
+        token: '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'
+      run: |
+         security create-keychain -p 2001 build.keychain
+         security default-keychain -s build.keychain
+         security list-keychains -s build.keychain
+         security unlock-keychain -p 2001 build.keychain
+         security set-keychain-settings -t 3600 -u build.keychain
+         fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
+              "filepath": "./AuthKey_2ZLY3J6J82.p8"
+              ,"key_id": "2ZLY3J6J82",
+              "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
+              "in_house": false
+              
+            }' 
+
+
+         fastlane match developer_id --platform macos --additional_cert_types developer_id_installer --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
+              "filepath": "./AuthKey_2ZLY3J6J82.p8"
+              ,"key_id": "2ZLY3J6J82",
+              "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
+              "in_house": false
+              
+            }' 
+    - name: Get Code Signing Key
+      run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep 'Apple Distribution' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
+    - name: Get Package Signing Key
+      run: echo "Package_SIGNING_KEY=$(security find-identity -p macappstore -v | grep "3rd Party Mac Developer Installer" | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
+    - name: Setup Maui
+      run: dotnet workload install maui
+    - name: Restore App
+      run: dotnet restore
+    - name: Publish App
+     
+      run: |
+     
+          dotnet publish -f net8.0-maccatalyst -c Release  -p:CreatePackage=true -p:EnableCodeSigning=true -p:EnablePackageSigning=true -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName" -p:PackageSigningKey="${{ env.Package_SIGNING_KEY }}" -p:UseHardenedRuntime=true
+    - name: Get Pkg Path
+
+      run: echo "pkg-path=$(find $(pwd) -name "*.pkg")"  >> $GITHUB_ENV
+ 
+
+          
+    - name: Publish To Store
+      env: 
+          API_PRIVATE_KEYS_DIR: './'
+      run: |
+          xcrun altool --validate-app -f "${{ env.pkg-path }}" -t osx --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
+          xcrun altool --upload-app -f "${{ env.pkg-path }}" -t osx --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        path: |
+          ${{ env.pkg-path }}
+    
+    
+      
+      
+        
