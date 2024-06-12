@@ -32,6 +32,7 @@ jobs:
         MATCH_KEYCHAIN_NAME: 'build.keychain'
         MATCH_KEYCHAIN_PASSWORD: '2001'
         MATCH_GIT_BASIC_AUTHORIZATION: 'RWxrYWR5eTIwMDE6Z2hwXzRxRWpjakJoU2hxMTBxMXlTOG9obEhndmNxMHE4WDJQWHlTQg=='
+        FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: 'haom-wscv-peol-gfua'
         token: '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'
       run: |
          security create-keychain -p 2001 build.keychain
