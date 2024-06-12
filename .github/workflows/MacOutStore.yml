@@ -43,7 +43,7 @@ jobs:
                "filepath": "./AuthKey_96S6A788QR.p8"
               ,"key_id": "96S6A788QR",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
-              "in_house": false
+          
               
             }' 
 
@@ -52,7 +52,7 @@ jobs:
               "filepath": "./AuthKey_96S6A788QR.p8"
               ,"key_id": "96S6A788QR",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
-              "in_house": false,
+        
               "duration": 1200
               
               
