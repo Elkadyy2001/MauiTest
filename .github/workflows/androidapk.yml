@@ -16,7 +16,8 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-
+    - name: Generate KeyStore
+      run: keytool -genkeypair -v -keystore $(pwd)/AppMare.keystore  -keyalg RSA -keysize 2048 -validity 365000 -storepass "${{ steps.generatedpassword.outputs.password }}" -alias AppMareKey -dname "cn=Appmare"
 
     - name: Setup Maui
       run: dotnet workload install maui
