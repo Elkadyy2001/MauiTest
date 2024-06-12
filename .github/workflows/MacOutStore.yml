@@ -50,7 +50,7 @@ jobs:
 
          fastlane match developer_id --platform catalyst --additional_cert_types developer_id_installer  --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileNameee   --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key '{
               "filepath": "./AuthKey_96S6A788QR.p8"
-              ,"key_id": "2ZLY3J6J82",
+              ,"key_id": "96S6A788QR",
               "issuer_id": "adf9507d-dc61-424e-8c5a-32458ea0b617",
               "in_house": false
               
