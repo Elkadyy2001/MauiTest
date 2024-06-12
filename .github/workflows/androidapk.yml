@@ -9,14 +9,15 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
-    
-    - uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Password Generator
     - id: generatedpassword
       uses: Ba4bes/Password-Generator@v0.1
     - run: echo "${{ steps.generatedpassword.outputs.password }}"
+      shell: bash
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+
     - name: Setup Maui
       run: dotnet workload install maui
     - name: Restore App
