@@ -1,4 +1,4 @@
-name: Publish androidapk Maui
+name: Publish androidapk newkeystore Maui
 
 on:
    workflow_dispatch: # This triggers the workflow manually
