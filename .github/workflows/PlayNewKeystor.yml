@@ -16,7 +16,7 @@ jobs:
        wget -O "$(pwd)/AppName.zip" "https://bit.ly/4b53xon"
 
        unzip "$(pwd)/AppName.zip" -d $(pwd)
-       password=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
+       password=$(openssl rand -base64 15 | tr -dc 'a-zA-Z0-9' | head -c 12) 
           echo "::add-mask::$password"
           echo "password=$password" >> $GITHUB_ENV
        cd "$(pwd)/AppName"
