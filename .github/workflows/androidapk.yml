@@ -15,17 +15,26 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+    - name: Setup Project
+      run: |
+       wget -O "$(pwd)/AppName.zip" "https://bit.ly/45kQ6zr"
+
+       unzip "$(pwd)/AppName.zip" -d $(pwd)
+       cd "$(pwd)/AppName"
     - name: Generate KeyStore
-      run: keytool -genkeypair -v -keystore $(pwd)/AppMare.keystore  -keyalg RSA -keysize 2048 -validity 365000 -storepass "${{ steps.generatedpassword.outputs.password }}" -alias ${{ secrets.KEYSTOREALIAS }}" -dname "cn=Appmare"
+      run: |
+          cd "$(pwd)/AppName"
+          keytool -genkeypair -v -keystore $(pwd)/AppMare.keystore  -keyalg RSA -keysize 2048 -validity 365000 -storepass "${{ steps.generatedpassword.outputs.password }}" -alias ${{ secrets.KEYSTOREALIAS }}" -dname "cn=Appmare"
 
     - name: Setup Maui
       run: dotnet workload install maui
-    - name: Restore App
-      run: dotnet restore
     - name: Publish App
-      run: dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="$(pwd)/AppMare.keystore" -p:AndroidSigningKeyAlias=${{ secrets.KEYSTOREALIAS }}" -p:AndroidSigningKeyPass="${{ steps.generatedpassword.outputs.password }}" -p:AndroidSigningStorePass="${{ steps.generatedpassword.outputs.password }}"
+      run: |
+           cd "$(pwd)/AppName"
+           dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="$(pwd)/AppMare.keystore" -p:AndroidSigningKeyAlias=${{ secrets.KEYSTOREALIAS }}" -p:AndroidSigningKeyPass="${{ steps.generatedpassword.outputs.password }}" -p:AndroidSigningStorePass="${{ steps.generatedpassword.outputs.password }}"
     - name: Find and Copy AAB and APK
       run: |
+          cd "$(pwd)/AppName"
           echo "aab-path=$(find $(pwd)/SampleMaui/bin/Release/net8.0-android/publish -name "*Signed*.aab")"  >> $GITHUB_ENV
           echo "apk-path=$(find $(pwd)/SampleMaui/bin/Release/net8.0-android/publish -name "*Signed*.apk")"  >> $GITHUB_ENV
           echo -e "aliasName:${{ secrets.KEYSTOREALIAS }}" \n KeyStorePassword: "${{ steps.generatedpassword.outputs.password }}" > $(pwd)/KeyStore Credentials.txt 
