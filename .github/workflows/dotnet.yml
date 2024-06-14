@@ -66,10 +66,12 @@ jobs:
     - name: Publish To Store
       env: 
           API_PRIVATE_KEYS_DIR: './'
+      
+      
       run: |
-       cd "$(pwd)/AppName"
-       api_key_json=$(jq -n --arg key "${{secrets.APIKEY}}" --arg key_id "${{ secrets.KEYID }}" --arg issuer_id "${{ secrets.ISSUERID }}" '{key: $key, key_id: $key_id, issuer_id: $issuer_id, in_house: false}')
-       fastlane deliver  --skip_screenshots true --ipa "${{ env.ipa-path }}" --api_key "$api_key_json"
+          cd "$(pwd)/AppName"
+          xcrun altool --validate-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
+          xcrun altool --upload-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
