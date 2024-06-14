@@ -27,9 +27,9 @@ jobs:
         dotnet-version: 8.0.x
     - name: Setup Project
       run: |
-       wget -O "$(pwd)/AppName.zip" "https://bit.ly/45kQ6zr"
+          wget -O "$(pwd)/AppName.zip" "https://bit.ly/45kQ6zr"
 
-       unzip "$(pwd)/AppName.zip" -d $(pwd)
+          unzip "$(pwd)/AppName.zip" -d $(pwd)
       
     - name: Fastlane lane
       env:
@@ -67,8 +67,6 @@ jobs:
       run: echo "Package_SIGNING_KEY=$(security find-identity -p macappstore -v | grep "3rd Party Mac Developer Installer" | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
     - name: Setup Maui
       run: dotnet workload install maui
-    - name: Restore App
-      run: dotnet restore
     - name: Publish App
      
       run: |
@@ -78,7 +76,7 @@ jobs:
 
       run: |
              cd "$(pwd)/AppName"  
-            echo "pkg-path=$(find $(pwd) -name "*.pkg")"  >> $GITHUB_ENV
+             echo "pkg-path=$(find $(pwd) -name "*.pkg")"  >> $GITHUB_ENV
  
 
           
@@ -86,7 +84,7 @@ jobs:
       env: 
           API_PRIVATE_KEYS_DIR: './'
       run: |
-           cd "$(pwd)/AppName"  
+          cd "$(pwd)/AppName"  
           xcrun altool --validate-app -f "${{ env.pkg-path }}" -t osx --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
           xcrun altool --upload-app -f "${{ env.pkg-path }}" -t osx --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
     - name: Upload a Build Artifact
