@@ -1,0 +1,36 @@
+name: Publish android Play newkeystore Maui
+
+on:
+   workflow_dispatch: # This triggers the workflow manually
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - id: generatedpassword
+      uses: Ba4bes/Password-Generator@v0.1
+
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Generate KeyStore
+      run: keytool -genkeypair -v -keystore $(pwd)/AppMare.keystore  -keyalg RSA -keysize 2048 -validity 365000 -storepass "${{ steps.generatedpassword.outputs.password }}" -alias AppMareKey -dname "cn=Appmare"
+
+    - name: Setup Maui
+      run: dotnet workload install maui
+    - name: Restore App
+      run: dotnet restore
+    - name: Publish App
+      run: dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="$(pwd)/AppMare.keystore" -p:AndroidSigningKeyAlias=AppMareKey -p:AndroidSigningKeyPass="${{ steps.generatedpassword.outputs.password }}" -p:AndroidSigningStorePass="${{ steps.generatedpassword.outputs.password }}"
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        path: |
+          ./**/*.aab
+          ./**/*.apk
+         
+  
+
+        
