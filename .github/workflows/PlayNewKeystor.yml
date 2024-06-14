@@ -35,14 +35,14 @@ jobs:
       run: |
          
           echo "aab-path=$(find $(pwd)/AppName/SampleMaui/bin/Release/net8.0-android/publish -name "*Signed*.aab")"  >> $GITHUB_ENV
-            echo -e "aliasName:${{ secrets.KEYSTOREALIAS }}" \n KeyStorePassword: "${{ steps.generatedpassword.outputs.password }}" > $(pwd)/KeyStore Credentials.txt 
+            echo -e "aliasName:${{ secrets.KEYSTOREALIAS }}" \n KeyStorePassword: "${{ steps.generatedpassword.outputs.password }}" > "$(pwd)/KeyStore Credentials.txt" 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         path: |
           ${{ env.aab-path }}
-          $(pwd)/KeyStore Credentials.txt 
-          $(pwd)/AppMare.keystore
+          "$(pwd)/KeyStore Credentials.txt" 
+          "$(pwd)/AppMare.keystore"
     - name: Deploy To PlayStore
       uses: r0adkll/upload-google-play@v1
       with:
