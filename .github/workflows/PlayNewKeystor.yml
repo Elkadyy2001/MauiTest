@@ -14,7 +14,7 @@ jobs:
     - name: Setup Project
       run: |
        wget -O "$(pwd)/AppName.zip" "https://bit.ly/4b53xon"
-
+       echo $(pwd)
        unzip "$(pwd)/AppName.zip" -d $(pwd)
        password=$(openssl rand -base64 15 | tr -dc 'a-zA-Z0-9' | head -c 12) 
           echo "::add-mask::$password"
