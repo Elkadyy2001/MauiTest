@@ -25,6 +25,11 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+    - name: Setup Project
+      run: |
+       wget -O "$(pwd)/AppName.zip" "https://bit.ly/45kQ6zr"
+
+       unzip "$(pwd)/AppName.zip" -d $(pwd)
       
     - name: Fastlane lane
       env:
@@ -34,6 +39,7 @@ jobs:
         MATCH_GIT_BASIC_AUTHORIZATION: 'RWxrYWR5eTIwMDE6Z2hwXzRxRWpjakJoU2hxMTBxMXlTOG9obEhndmNxMHE4WDJQWHlTQg=='
         token: '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'
       run: |
+         cd "$(pwd)/AppName"  
          security create-keychain -p 2001 build.keychain
          security default-keychain -s build.keychain
          security list-keychains -s build.keychain
@@ -66,11 +72,13 @@ jobs:
     - name: Publish App
      
       run: |
-     
+          cd "$(pwd)/AppName"  
           dotnet publish -f net8.0-maccatalyst -c Release  -p:CreatePackage=true -p:EnableCodeSigning=true -p:EnablePackageSigning=true -p:CodesignKey="${{ env.CODE_SIGNING_KEY }}" -p:CodesignProvision="MyCustomProfileName" -p:PackageSigningKey="${{ env.Package_SIGNING_KEY }}"
     - name: Get Pkg Path
 
-      run: echo "pkg-path=$(find $(pwd) -name "*.pkg")"  >> $GITHUB_ENV
+      run: |
+             cd "$(pwd)/AppName"  
+            echo "pkg-path=$(find $(pwd) -name "*.pkg")"  >> $GITHUB_ENV
  
 
           
@@ -78,6 +86,7 @@ jobs:
       env: 
           API_PRIVATE_KEYS_DIR: './'
       run: |
+           cd "$(pwd)/AppName"  
           xcrun altool --validate-app -f "${{ env.pkg-path }}" -t osx --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
           xcrun altool --upload-app -f "${{ env.pkg-path }}" -t osx --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
     - name: Upload a Build Artifact
