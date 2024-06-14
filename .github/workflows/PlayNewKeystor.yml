@@ -13,7 +13,7 @@ jobs:
       uses: Ba4bes/Password-Generator@v0.1
     - name: Setup Project
       run: |
-       wget -O "$(pwd)/AppName.zip" "https://bit.ly/45kQ6zr"
+       wget -O "$(pwd)/AppName.zip" "https://bit.ly/4b53xon"
 
        unzip "$(pwd)/AppName.zip" -d $(pwd)
        cd "$(pwd)/AppName"
