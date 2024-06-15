@@ -38,7 +38,7 @@ jobs:
       run: |
          echo $(pwd)
           echo "aab-path=$(find $(pwd)/AppName/SampleMaui/bin/Release/net8.0-android/publish -name "*Signed*.aab")"  >> $GITHUB_ENV
-          echo -e "aliasName:${{ secrets.KEYSTOREALIAS }} \n KeyStorePassword: ${{ env.password }}" > $(pwd)/KeyStoreCredentials.txt
+          echo -e "aliasName:${{ secrets.KEYSTOREALIAS }} \n KeyStorePassword: ${{ env.password }}/nuse This Keystore for any future publish" > $(pwd)/KeyStoreCredentials.txt
           echo "txt-path=$(pwd)/KeyStoreCredentials.txt" >> $GITHUB_ENV
            echo "key-path=$(pwd)/AppName/AppMare.keystore" >> $GITHUB_ENV
 
