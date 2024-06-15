@@ -52,7 +52,7 @@ jobs:
       with:
         path: |
    
-          "/Users/runner/work/MauiTest/MauiTest/AppName/SampleMaui/bin/Release/net8.0-android/publish/KeyStoreCredentials.txt" 
+          /Users/runner/work/MauiTest/MauiTest/AppName/SampleMaui/bin/Release/net8.0-android/publish/KeyStoreCredentials.txt 
     - name: Upload a Build Artifact3
       uses: actions/upload-artifact@v4
       with:
