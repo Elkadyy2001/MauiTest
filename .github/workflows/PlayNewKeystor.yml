@@ -26,7 +26,7 @@ jobs:
     - name: Generate KeyStore
       run: |
           cd "$(pwd)/AppName"
-          keytool -genkeypair -v -keystore $(pwd)/AppMare.keystore  -keyalg RSA -keysize 2048 -validity 365000 -storepass ${{ env.password }} -alias ${{ secrets.KEYSTOREALIAS }} -dname "cn=Appmare"
+          keytool -genkeypair -v -keystore /Users/runner/work/MauiTest/MauiTest/AppMare.keystore  -keyalg RSA -keysize 2048 -validity 365000 -storepass ${{ env.password }} -alias ${{ secrets.KEYSTOREALIAS }} -dname "cn=Appmare"
 
     - name: Setup Maui
       run: dotnet workload install maui
@@ -52,12 +52,12 @@ jobs:
       with:
         path: |
    
-          "/Users/runner/work/MauiTest/MauiTest/AppName/KeyStoreCredentials.txt" 
+          "/Users/runner/work/MauiTest/MauiTest/KeyStoreCredentials.txt" 
     - name: Upload a Build Artifact3
       uses: actions/upload-artifact@v4
       with:
         path: |
-            "/Users/runner/work/MauiTest/MauiTest/AppName/AppMare.keystore"       
+            "/Users/runner/work/MauiTest/MauiTest/AppMare.keystore"       
           
     - name: Deploy To PlayStore
       uses: r0adkll/upload-google-play@v1
