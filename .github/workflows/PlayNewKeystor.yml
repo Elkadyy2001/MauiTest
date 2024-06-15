@@ -46,9 +46,21 @@ jobs:
       with:
         path: |
           ${{ env.aab-path }}
-          $(pwd)/KeyStoreCredentials.txt
-          $(pwd)/AppName/AppMare.keystore
+        
      
+    - name: Upload a Build Artifact2
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        path: |
+
+          $(pwd)/KeyStoreCredentials.txt
+
+          
+    - name: Upload a Build Artifact3
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        path: |
+          $(pwd)/AppName/AppMare.keystore
           
     - name: Deploy To PlayStore
       uses: r0adkll/upload-google-play@v1
