@@ -33,7 +33,7 @@ jobs:
     - name: Publish App
       run: |
         cd "$(pwd)/AppName"
-        dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="/Users/runner/work/MauiTest/MauiTest/AppMare.keystore" -p:AndroidSigningKeyAlias="${{ secrets.KEYSTOREALIAS }}" -p:AndroidSigningKeyPass="${{ env.password }}" -p:AndroidSigningStorePass="${{ env.password }}"
+        dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=$(pwd)/AppMare.keystore -p:AndroidSigningKeyAlias="${{ secrets.KEYSTOREALIAS }}" -p:AndroidSigningKeyPass="${{ env.password }}" -p:AndroidSigningStorePass="${{ env.password }}"
     - name: Find and Copy AAB and APK
       run: |
          echo $(pwd)
@@ -48,12 +48,7 @@ jobs:
           ${{ env.aab-path }}
           $(pwd)/KeyStoreCredentials.txt
           $(pwd)/AppName/AppMare.keystore
-  
-    - name: Upload a Build Artifact3
-      uses: actions/upload-artifact@v4
-      with:
-        path: |
-            "/Users/runner/work/MauiTest/MauiTest/AppMare.keystore"       
+     
           
     - name: Deploy To PlayStore
       uses: r0adkll/upload-google-play@v1
