@@ -26,7 +26,7 @@ jobs:
     - name: Generate KeyStore
       run: |
           cd "$(pwd)/AppName"
-          keytool -genkeypair -v -keystore /Users/runner/work/MauiTest/MauiTest/AppMare.keystore  -keyalg RSA -keysize 2048 -validity 365000 -storepass ${{ env.password }} -alias ${{ secrets.KEYSTOREALIAS }} -dname "cn=Appmare"
+          keytool -genkeypair -v -keystore $(pwd)/AppMare.keystore  -keyalg RSA -keysize 2048 -validity 365000 -storepass ${{ env.password }} -alias ${{ secrets.KEYSTOREALIAS }} -dname "cn=Appmare"
 
     - name: Setup Maui
       run: dotnet workload install maui
@@ -38,21 +38,17 @@ jobs:
       run: |
          echo $(pwd)
           echo "aab-path=$(find $(pwd)/AppName/SampleMaui/bin/Release/net8.0-android/publish -name "*Signed*.aab")"  >> $GITHUB_ENV
-          echo -e "aliasName:${{ secrets.KEYSTOREALIAS }} \n KeyStorePassword: ${{ env.password }}" > "/Users/runner/work/MauiTest/MauiTest/AppName/SampleMaui/bin/Release/net8.0-android/publish/KeyStoreCredentials.txt" 
-          cat "/Users/runner/work/MauiTest/MauiTest/AppName/SampleMaui/bin/Release/net8.0-android/publish/KeyStoreCredentials.txt"
+          echo -e "aliasName:${{ secrets.KEYSTOREALIAS }} \n KeyStorePassword: ${{ env.password }}" > $(pwd)/KeyStoreCredentials.txt
+      
 
-    # - name: Upload a Build Artifact
-    #   uses: actions/upload-artifact@v3.1.0
-    #   with:
-    #     path: |
-    #       ${{ env.aab-path }}
-        
-    - name: Upload a Build Artifact2
+    - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         path: |
-   
-          /Users/runner/work/MauiTest/MauiTest/AppName/SampleMaui/bin/Release/net8.0-android/publish/KeyStoreCredentials.txt 
+          ${{ env.aab-path }}
+          $(pwd)/KeyStoreCredentials.txt
+          $(pwd)/AppName/AppMare.keystore
+  
     - name: Upload a Build Artifact3
       uses: actions/upload-artifact@v4
       with:
