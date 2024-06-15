@@ -48,7 +48,7 @@ jobs:
     #       ${{ env.aab-path }}
         
     - name: Upload a Build Artifact2
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3.1.0
       with:
         path: |
    
