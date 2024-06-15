@@ -33,7 +33,7 @@ jobs:
     - name: Publish App
       run: |
         cd "$(pwd)/AppName"
-        dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="$(pwd)/AppMare.keystore" -p:AndroidSigningKeyAlias="${{ secrets.KEYSTOREALIAS }}" -p:AndroidSigningKeyPass="${{ env.password }}" -p:AndroidSigningStorePass="${{ env.password }}"
+        dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="/Users/runner/work/MauiTest/MauiTest/AppMare.keystore" -p:AndroidSigningKeyAlias="${{ secrets.KEYSTOREALIAS }}" -p:AndroidSigningKeyPass="${{ env.password }}" -p:AndroidSigningStorePass="${{ env.password }}"
     - name: Find and Copy AAB and APK
       run: |
          
