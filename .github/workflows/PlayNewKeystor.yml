@@ -39,7 +39,7 @@ jobs:
          echo $(pwd)
           echo "aab-path=$(find $(pwd)/AppName/SampleMaui/bin/Release/net8.0-android/publish -name "*Signed*.aab")"  >> $GITHUB_ENV
           echo -e "aliasName:${{ secrets.KEYSTOREALIAS }} \n KeyStorePassword: ${{ env.password }}" > "/Users/runner/work/MauiTest/MauiTest/AppName/SampleMaui/bin/Release/net8.0-android/publish/KeyStoreCredentials.txt" 
-            cat "/Users/runner/work/MauiTest/MauiTest/AppName/SampleMaui/bin/Release/net8.0-android/publish/KeyStoreCredentials.txt"
+          cat "/Users/runner/work/MauiTest/MauiTest/AppName/SampleMaui/bin/Release/net8.0-android/publish/KeyStoreCredentials.txt"
 
     # - name: Upload a Build Artifact
     #   uses: actions/upload-artifact@v3.1.0
