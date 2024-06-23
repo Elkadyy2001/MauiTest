@@ -6,11 +6,10 @@ on:
 jobs:
   build:
 
-    runs-on: macos-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
-    - id: generatedpassword
-      uses: Ba4bes/Password-Generator@v0.1
+ 
 
     - uses: actions/setup-dotnet@v4
       with:
@@ -21,43 +20,26 @@ jobs:
 
        unzip "$(pwd)/AppName.zip" -d $(pwd)
        cd "$(pwd)/AppName"
-    - name: Generate KeyStore
-      run: |
-          cd "$(pwd)/AppName"
-          keytool -genkeypair -v -keystore $(pwd)/AppMare.keystore  -keyalg RSA -keysize 2048 -validity 365000 -storepass "${{ steps.generatedpassword.outputs.password }}" -alias ${{ secrets.KEYSTOREALIAS }}" -dname "cn=Appmare"
 
     - name: Setup Maui
       run: dotnet workload install maui
     - name: Publish App
       run: |
            cd "$(pwd)/AppName"
-           dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="$(pwd)/AppMare.keystore" -p:AndroidSigningKeyAlias=${{ secrets.KEYSTOREALIAS }}" -p:AndroidSigningKeyPass="${{ steps.generatedpassword.outputs.password }}" -p:AndroidSigningStorePass="${{ steps.generatedpassword.outputs.password }}"
+           dotnet publish -f net8.0-windows10.0.19041.0 -c Release -p:RuntimeIdentifierOverride=win10-x64 -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true -p:PublishSingleFile=true --self-contained true -p:PublishTrimmed=true -p:TrimMode=partial
+
     - name: Find and Copy AAB and APK
       run: |
           cd "$(pwd)/AppName"
-          echo "aab-path=$(find $(pwd)/SampleMaui/bin/Release/net8.0-android/publish -name "*Signed*.aab")"  >> $GITHUB_ENV
-          echo "apk-path=$(find $(pwd)/SampleMaui/bin/Release/net8.0-android/publish -name "*Signed*.apk")"  >> $GITHUB_ENV
-          echo -e "aliasName:${{ secrets.KEYSTOREALIAS }} \n KeyStorePassword: ${{ env.password }}\n use This Keystore for any future publish" > $(pwd)/KeyStoreCredentials.txt
-          echo "txt-path=$(pwd)/KeyStoreCredentials.txt" >> $GITHUB_ENV
-           echo "key-path=$(pwd)/AppName/AppMare.keystore" >> $GITHUB_ENV
+          echo "exe-path=$(find $(pwd)/SampleMaui/bin/Release/net8.0-windows10.0.19041.0 -type d -name publish -exec find {} -name '*.exe' \;)" >> $GITHUB_ENV
+
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         path: |
-          ${{ env.aab-path }}
-          ${{ env.apk-path }}
-    - name: Upload a Build Artifact2
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        path: |
-           ${{ env.key-path }}
-          
-    - name: Upload a Build Artifact3
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        path: |
-            ${{ env.txt-path }}
+          ${{ env.exe-path }}
+
           
 
         
