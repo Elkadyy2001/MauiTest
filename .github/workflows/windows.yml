@@ -33,7 +33,7 @@ jobs:
          $currentPath = (Get-Location).ProviderPath
           cd "$currentPath/AppName"
            $exePath1 = Get-ChildItem -Path $currentPath/AppName/SampleMaui/bin/Release/net8.0-windows10.0.19041.0 -Recurse -File -Filter '*.exe' | Where-Object { $_.Directory.Name -eq "publish" } | Select-Object -ExpandProperty FullName
-           echo "exe-path=$exePath1"  >> $GITHUB_ENV
+           echo "exe-path=$exePath1" | Out-File -FilePath $env:GITHUB_ENV 
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
