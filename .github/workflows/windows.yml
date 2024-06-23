@@ -23,7 +23,10 @@ jobs:
        cd "$(pwd)/AppName"
 
     - name: Setup Maui
-      run: dotnet workload install maui-windows
+      run: |
+      
+         dotnet workload list
+         # dotnet workload install maui-windows
     - name: Publish App
       run: |
            cd "$(pwd)/AppName"
