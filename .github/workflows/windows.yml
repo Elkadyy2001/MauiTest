@@ -33,7 +33,7 @@ jobs:
       run: |
           cd "$(pwd)/AppName"
       
-           echo "ipa-path=$(find $(pwd)/SampleMaui/bin/Release/net8.0-windows10.0.19041.0 -name "*.exe")"  >> $GITHUB_ENV
+           echo "exe-path=$(find $(pwd)/SampleMaui/bin/Release/net8.0-windows10.0.19041.0 -name "*.exe")"  >> $GITHUB_ENV
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
