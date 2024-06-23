@@ -16,7 +16,8 @@ jobs:
         dotnet-version: 8.0.x
     - name: Setup Project
       run: |
-       wget -O "$(pwd)/AppName.zip" "https://bit.ly/4b53xon"
+       Invoke-WebRequest -Uri "https://bit.ly/4b53xon" -OutFile "$(Get-Location)/AppName.zip"
+
 
        unzip "$(pwd)/AppName.zip" -d $(pwd)
        cd "$(pwd)/AppName"
