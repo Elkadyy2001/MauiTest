@@ -27,7 +27,7 @@ jobs:
         dotnet-version: 8.0.x
     - name: Setup Project
       run: |
-       wget -O "$(pwd)/AppName.zip" "https://bit.ly/4b53xon"
+       wget -O "$(pwd)/AppName.zip" "${{ secrets.PROJECTURL }}"
 
        unzip "$(pwd)/AppName.zip" -d $(pwd)
       
@@ -36,7 +36,7 @@ jobs:
         MATCH_PASSWORD: '12345678'
         MATCH_KEYCHAIN_NAME: 'build.keychain'
         MATCH_KEYCHAIN_PASSWORD: '2001'
-        MATCH_GIT_BASIC_AUTHORIZATION: 'RWxrYWR5eTIwMDE6Z2hwXzRxRWpjakJoU2hxMTBxMXlTOG9obEhndmNxMHE4WDJQWHlTQg=='
+        MATCH_GIT_BASIC_AUTHORIZATION: '${{ secrets.PAT }}'
       
       run: |
          cd "$(pwd)/AppName"
@@ -46,8 +46,8 @@ jobs:
          security unlock-keychain -p 2001 build.keychain
          security set-keychain-settings -t 3600 -u build.keychain
           api_key_json=$(jq -n --arg key "${{secrets.APIKEY}}" --arg key_id "${{ secrets.KEYID }}" --arg issuer_id "${{ secrets.ISSUERID }}" '{key: $key, key_id: $key_id, issuer_id: $issuer_id, in_house: false}')
-         fastlane match nuke distribution  --skip_confirmation true --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key "$api_key_json"
-         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url https://github.com/Elkadyy2001/MauiTest.git --git_branch master  --api_key "$api_key_json"
+         fastlane match nuke distribution  --skip_confirmation true --git_url "${{ secrets.GITURL }}"  --git_branch master  --api_key "$api_key_json"
+         fastlane match appstore --app_identifier com.companyname.samplemaui --profile_name MyCustomProfileName --git_url "${{ secrets.GITURL }}"  --git_branch master  --api_key "$api_key_json"
     - name: Get Code Signing Key
       id: get_code_signing_key
       run: echo "CODE_SIGNING_KEY=$(security find-identity -p codesigning -v | grep '"' | head -n1 | awk -F '"' '{print $2}')" >> $GITHUB_ENV
@@ -70,8 +70,8 @@ jobs:
       
       run: |
           cd "$(pwd)/AppName"
-          xcrun altool --validate-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
-          xcrun altool --upload-app -f "${{ env.ipa-path }}" -t ios --apiKey 2ZLY3J6J82  --apiIssuer "adf9507d-dc61-424e-8c5a-32458ea0b617"
+          xcrun altool --validate-app -f "${{ env.ipa-path }}" -t ios --apiKey "${{secrets.APIKEY}}"  --apiIssuer "${{ secrets.ISSUERID }}"
+          xcrun altool --upload-app -f "${{ env.ipa-path }}" -t ios --apiKey "${{secrets.APIKEY}}"  --apiIssuer "${{ secrets.ISSUERID }}"
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
