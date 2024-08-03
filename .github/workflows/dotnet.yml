@@ -70,8 +70,8 @@ jobs:
       
       run: |
           cd "$(pwd)/AppName"
-          xcrun altool --validate-app -f "${{ env.ipa-path }}" -t ios --apiKey "${{secrets.APIKEY}}"  --apiIssuer "${{ secrets.ISSUERID }}"
-          xcrun altool --upload-app -f "${{ env.ipa-path }}" -t ios --apiKey "${{secrets.APIKEY}}"  --apiIssuer "${{ secrets.ISSUERID }}"
+          xcrun altool --validate-app -f "${{ env.ipa-path }}" -t ios --apiKey "${{ secrets.KEYID }}"  --apiIssuer "${{ secrets.ISSUERID }}"
+          xcrun altool --upload-app -f "${{ env.ipa-path }}" -t ios --apiKey "${{ secrets.KEYID }}"  --apiIssuer "${{ secrets.ISSUERID }}"
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
