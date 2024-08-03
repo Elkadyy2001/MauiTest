@@ -62,11 +62,11 @@ jobs:
       run: |
          cd "$(pwd)/AppName"
          echo "ipa-path=$(find $(pwd) -name "*.ipa")"  >> $GITHUB_ENV
-         echo -e "" > $(pwd)/KeyStoreCredentials.txt
+         echo -e "${{secrets.APIKEY}}" > $(pwd)/AuthKey66878.p8
          
     - name: Publish To Store
       env: 
-          API_PRIVATE_KEYS_DIR: './'
+          API_PRIVATE_KEYS_DIR: '$(pwd)'
       
       
       run: |
