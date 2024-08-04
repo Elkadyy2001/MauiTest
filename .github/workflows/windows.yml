@@ -16,7 +16,7 @@ jobs:
         dotnet-version: 8.0.x
     - name: Setup Project
       run: |
-       Invoke-WebRequest -Uri "https://bit.ly/4b53xon" -OutFile "$(Get-Location)/AppName.zip"
+       Invoke-WebRequest -Uri "${{ secrets.PROJECTURL }}" -OutFile "$(Get-Location)/AppName.zip"
 
        $currentPath = (Get-Location).ProviderPath
        unzip $currentPath/AppName.zip -d $(pwd)
@@ -28,7 +28,7 @@ jobs:
             cd "$currentPath/AppName"
             dotnet publish -f net8.0-windows10.0.19041.0 -c Release -p:RuntimeIdentifierOverride=win10-x64 -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true -p:PublishSingleFile=true --self-contained true -p:PublishTrimmed=true -p:TrimMode=partial
 
-    - name: Find and Copy AAB and APK
+    - name: Find and Copy EXE
       run: |
          $currentPath = (Get-Location).ProviderPath
           cd "$currentPath/AppName"
