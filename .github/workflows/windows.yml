@@ -16,7 +16,7 @@ jobs:
         dotnet-version: 8.0.x
     - name: Setup Project
       run: |
-       Invoke-WebRequest -Uri "https://bit.ly/4b53xon" -OutFile "$(Get-Location)/AppName.zip"
+       Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/app-maker-82b52.appspot.com/o/AppName.zip?alt=media&token=c6fbced8-a3bb-4235-bfe1-b6aef1df32cb" -OutFile "$(Get-Location)/AppName.zip"
 
        $currentPath = (Get-Location).ProviderPath
        unzip $currentPath/AppName.zip -d $(pwd)
